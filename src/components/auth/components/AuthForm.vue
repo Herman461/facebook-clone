@@ -1,31 +1,32 @@
 <template>
-  <div>
-    <form class="form-login" @submit.prevent="submitForm">
-      <div class="form-login__input">
-        <base-input
-            :modelValue="username"
-            label="Enter your name"
-            name="username"
-            @update:modelValue="verifyUsername"
-        />
-      </div>
-      <div class="form-login__input">
-        <base-input
-            :modelValue="password"
-            type="password"
-            label="Enter your password"
-            name="password"
-            @update:modelValue="updatePassword"
-        />
-      </div>
-      <div class="form-login__btn">
-        <button class="btn">Go!</button>
-      </div>
-    </form>
-    <div class="socials">
-      <div class="socials__item" @click="socialAuth('facebook')">facebook</div>
-    </div>
-  </div>
+<!--  <div>-->
+<!--    <form class="form-login" @submit.prevent="submitForm">-->
+<!--      <div class="form-login__input">-->
+<!--        <base-input-->
+<!--            :modelValue="username"-->
+<!--            label="Enter your name"-->
+<!--            name="username"-->
+<!--            @update:modelValue="verifyUsername"-->
+<!--        />-->
+<!--      </div>-->
+<!--      <div class="form-login__input">-->
+<!--        <base-input-->
+<!--            :modelValue="password"-->
+<!--            type="password"-->
+<!--            label="Enter your password"-->
+<!--            name="password"-->
+<!--            @update:modelValue="updatePassword"-->
+<!--        />-->
+<!--      </div>-->
+<!--      <div class="form-login__btn">-->
+<!--        <button class="btn">Go!</button>-->
+<!--      </div>-->
+<!--    </form>-->
+<!--    <div class="socials">-->
+<!--      <div class="socials__item" @click="socialAuth('facebook')">facebook</div>-->
+<!--    </div>-->
+<!--  </div>-->
+
 </template>
 
 <script>
@@ -50,16 +51,17 @@ export default {
     })
   },
   mounted() {
-    this.$notify({
-      title: "My component"
-    })
+    this.$notify('Hello world!')
   },
   methods: {
     async socialAuth(network) {
       try {
         const redirectUri = `${window.location.protocol}//${window.location.host}`;
 
-        await hello.login(network);
+        await hello.login(network, {
+          force: true,
+          redirect_uri: redirectUri
+        });
         const result = await hello(network).api('me');
         console.log(result)
       } catch(e) {

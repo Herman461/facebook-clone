@@ -1,14 +1,14 @@
 <template>
-  <div class="root">
-    <router-view />
-  </div>
+  <base-wrapper></base-wrapper>
 </template>
 <script>
 import AuthPage from "./components/auth/AuthPage";
-import ElNotification from "./components/common/ElNotification";
+import ElNotification from "./plugins/notification/ElNotification";
+import BaseWrapper from "./components/common/BaseWrapper";
+
 export default {
   name: 'app',
-  components: {ElNotification, AuthPage}
+  components: {BaseWrapper, ElNotification, AuthPage}
 }
 </script>
 

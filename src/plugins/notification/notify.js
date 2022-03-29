@@ -1,15 +1,14 @@
 import { emitter } from './events';
 
-export const notify = (args) => {
+export function notify(args) {
     if (typeof args === 'string') {
-        args = { title: "", text: args };
+        args = {
+            title: "",
+            text: args
+        }
     }
     if (typeof args === 'object') {
-        emitter.emit('add', args);
+        // console.log(args)
+        emitter.emit('add', args)
     }
 }
-
-notify.close = id => {
-    emitter.emit('close', id);
-}
-

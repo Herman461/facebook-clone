@@ -1,58 +1,44 @@
-const express = require('express');
-const app = express();
-const jsonParser = express.json();
-const cors = require('cors');
+import express from 'express'
+import bcrypt from 'bcrypt'
+import authRouter from './routers/authRouter.js'
 
-app.use(express.urlencoded({ extended: true }));
+import mongoose from 'mongoose'
 
-app.use(cors({
-    origin: '*',
-    preflightContinue: false,
-    credentials: true
-}));
+const MONGO_HOSTNAME = '127.0.0.1'
+const MONGO_PORT = '27017'
+const MONGO_DATABASE = 'facebook-clone'
+
+const app = express()
+const PORT = 8000
 
 
+app.use(express.json())
+app.use('/api', authRouter)
 
-const PORT = 3000;
-
-app.listen(PORT, () => {
-    console.log('Server has been started on port ' + PORT)
-})
-
-app.post('/api/users', jsonParser, (req, res) => {
-    const { username, password } = req.body;
-
-    const user = {
-        username: "Herman",
-        password: "123"
-    }
-    if (user.username === username && user.password === password) {
-        res.send({
-            resultCode: 0
+async function startApp() {
+    try {
+        await mongoose.connect(`mongodb://${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DATABASE}`)
+        app.listen(PORT, () => {
+            console.log(`Server started on port ${PORT}`)
         })
-    } else {
-        res.send({
-            resultCode: 1
-        })
+    } catch (e) {
+        console.log(e)
     }
-});
+}
 
-app.post('/api/auth/verify-username', jsonParser, (req, res) => {
-    const { username } = req.body;
+startApp()
 
-    const issues = [];
-
-    if (username.length < 1) {
-        issues.push('Username is too short');
-    }
-    if (username.length > 20) {
-        issues.push('Username is too long');
-    }
-    if (username === "Herman") {
-        issues.push('Username is busy');
-    }
-    res.send({
-        resultCode: 0,
-        issues
-    })
-});
+// app.post('/api/register', async (req, res) => {
+//     try {
+//         const {email, password} = req.body
+//
+//         const salt = await bcrypt.genSalt()
+//         const hashedPassword = await bcrypt.hash(password, salt)
+//
+//         const user = await RegisteredUser.create({email, password: hashedPassword})
+//
+//         res.json(user)
+//     } catch (e) {
+//         res.status(500).json(e)
+//     }
+// })

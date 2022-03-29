@@ -1,6 +1,8 @@
-import { notify } from './notify'
+import { notify } from './notify';
 
-export default function install(app, options = {}) {
-    const name = options.name || "notify";
-    app.config.globalProperties['$' + name] = notify;
+export default {
+    install(app, options = {}) {
+        const name = options.name || "notify"
+        app.config.globalProperties["$" + name] = notify
+    }
 }
